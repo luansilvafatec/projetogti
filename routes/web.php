@@ -6,8 +6,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    return view('inicio');
+})->name('inicio');
 
 Route::get('/criar-conta', function () {
     return view('criar-conta');
@@ -51,3 +51,7 @@ Route::post('/logar', function (Request $request) {
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard')->middleware('auth');
+
+Route::get('/cadastra-equipe', function () {
+    return view('cadastra-equipe');
+})->name('cadastra-equipe');
