@@ -13,19 +13,19 @@ Route::get('/criar-conta', function () {
     return view('criar-conta');
 })->name('criar-conta');
 
-Route::post('/salva-conta',
-function (Request $request) {
-    //dd($request);
-    $user = new User();
-    $user->name = $request->name;
-    $user->email = $request->email;
-    $user->password = $request->password;
-    $user->save();
+Route::post(
+    '/salva-conta',
+    function (Request $request) {
+        //dd($request);
+        $user = new User();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = $request->password;
+        $user->save();
 
-    return redirect(route('login'));
-
-
-})->name('salva-conta');
+        return redirect(route('login'));
+    }
+)->name('salva-conta');
 
 Route::get('/login', function () {
     return view('login');
@@ -54,4 +54,12 @@ Route::get('/dashboard', function () {
 
 Route::get('/cadastra-equipe', function () {
     return view('cadastra-equipe');
-})->name('cadastra-equipe');
+})->name('cadastra-equipe')->middleware('auth');
+
+Route::post('/logout', function (Request $request) {
+
+    Auth::logout();
+    $request->session()->regenerate();
+    return redirect()->route('/');
+
+})->name('logout');
