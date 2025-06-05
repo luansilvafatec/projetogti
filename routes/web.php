@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Equipe;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -56,10 +57,29 @@ Route::get('/cadastra-equipe', function () {
     return view('cadastra-equipe');
 })->name('cadastra-equipe')->middleware('auth');
 
-Route::post('/logout', function (Request $request) {
+Route::get('/logout', function (Request $request) {
 
     Auth::logout();
     $request->session()->regenerate();
-    return redirect()->route('/');
+    return redirect('/');
 
 })->name('logout');
+
+Route::post('/salva-equipe', function (Request $request) {
+    //dd($request);
+    $equipe = new Equipe();
+    $equipe->nome = $request->nome;
+    $equipe->email = $request->email;
+    $equipe->formacao = $request->formacao;
+    $equipe->experiencia = $request->experiencia;
+    $equipe->save();
+
+    return "Equipe salva com sucesso!!";
+
+})->name('salva-equipe')->middleware('auth');
+
+
+Route::get('/lista-equipe', function () {
+    $equipe = Equipe::all();
+    return view('lista-equipe', compact('equipe'));
+})->name('lista-equipe');
